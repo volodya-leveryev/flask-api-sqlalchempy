@@ -1,0 +1,4 @@
+flask
+flask_restx
+flask_sqlalchemy
+flask_graphql==2.0.1
