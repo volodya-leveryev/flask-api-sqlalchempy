@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_graphql import GraphQLView
 
 from app.api import BookResource, BooksResource, api
-from app.models import db, schema
+from app.graphql import graphql_explorer, graphql_server
+from app.models import db
 
 
 def create_app(config=None):
@@ -14,14 +14,13 @@ def create_app(config=None):
     if config:
         app.config.from_mapping(config)
 
-    api.init_app(app)
     db.init_app(app)
+    api.init_app(app)
 
     api.add_resource(BooksResource, '/books/')
     api.add_resource(BookResource, '/book/<int:book_id>/')
 
-    app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
-        'graphql', schema=schema, graphiql=True,
-    ))
+    app.add_url_rule('/graphql/', view_func=graphql_explorer, methods=['GET'])
+    app.add_url_rule('/graphql/', view_func=graphql_server, methods=['POST'])
 
     return app

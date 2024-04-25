@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import Mapped, mapped_column
-import graphene
 
 
 db = SQLAlchemy()
@@ -13,13 +12,3 @@ class Book(db.Model):
 
     def to_dict(self):
         return {'id': self.id, 'title': self.title, 'author': self.author}
-
-
-class Query(graphene.ObjectType):
-    hello = graphene.String(description='A typical hello world')
-
-    def resolve_hello(self, info):
-        return 'World'
-
-
-schema = graphene.Schema(query=Query)

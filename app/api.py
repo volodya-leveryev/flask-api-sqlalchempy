@@ -13,9 +13,13 @@ class BookResource(Resource):
 
     def put(self, book_id):
         data = request.get_json()
+
+        # TODO: валидация данных
+
         book = Book.query.get_or_404(book_id)
         book.title = data.get('title')
         book.author = data.get('author')
+
         db.session.add(book)
         db.session.commit()
         return {'success': True}
@@ -29,11 +33,20 @@ class BookResource(Resource):
 
 class BooksResource(Resource):
     def get(self):
-        result = Book.query.all()
-        return [b.to_dict() for b in result]
+        """
+        Используем постраничный вывод с помощью параметра запроса page
+        https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/pagination/
+        """
+        page = db.paginate(db.select(Book).order_by(Book.title))
+        return [b.to_dict() for b in page]
 
     def post(self):
         data = request.get_json()
-        db.session.add(Book(title=data['title'], author=data['author']))
+
+        # TODO: валидация данных
+
+        new_book = Book(title=data['title'], author=data['author'])
+
+        db.session.add(new_book)
         db.session.commit()
         return {'success': True}
