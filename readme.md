@@ -8,7 +8,7 @@
 * [Coverage.py](https://coverage.readthedocs.io/)
 * [pytest](https://docs.pytest.org/)
 
-Порядок действий
+## Порядок действий
 
 1. Склонировать репозиторий
 2. Создать и активировать виртуальное окружение

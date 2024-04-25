@@ -1,4 +1,4 @@
 flask
 flask_restx
 flask_sqlalchemy
-graphene
+ariadne
