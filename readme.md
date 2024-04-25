@@ -20,9 +20,10 @@ from app import create_app, db
 app = create_app()
 with app.app_context():
     db.create_all()
+
 ```
 
-5. Открыть созданный файл test.db в средстве просмотра SQLite и добавить несколько строк данных
+5. Открыть созданный файл test.db в средстве просмотра SQLite (SQLite Browser) и добавить несколько строк данных
 6. Запустить сервер Flask в отладочном режиме:
 
 ```

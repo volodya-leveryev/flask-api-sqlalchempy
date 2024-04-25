@@ -10,7 +10,7 @@ from ariadne import QueryType, graphql_sync, make_executable_schema
 from ariadne.explorer import ExplorerGraphiQL
 from flask import jsonify, request
 
-from app.models import Book
+from app.models import Book, db
 
 type_defs = """
     type Book {
@@ -20,7 +20,8 @@ type_defs = """
     }
 
     type Query {
-        books(id: Int!): Book!
+        books: [Book]
+        book(id: Int!): Book!
     },
 """
 
@@ -28,6 +29,13 @@ query = QueryType()
 
 
 @query.field("books")
+def resolve_books(_obj, _info):
+    query = db.select(Book).order_by(Book.title)
+    books = db.session.execute(query).scalars()
+    return [b.to_dict() for b in books]
+
+
+@query.field("book")
 def resolve_books(_obj, _info, id):
     book = Book.query.get_or_404(id)
     return book.to_dict()
